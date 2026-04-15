@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NAKTA — Homemade Frozen Products</title>
+  <meta name="description" content="Handmade Central Asian frozen food. Halal. No additives. Made with love in Seattle, WA.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ─── RESET & BASE ─── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg:        #120e07;
+      --bg2:       #1c1509;
+      --bg3:       #231a0b;
+      --gold:      #C8851A;
+      --gold-lt:   #E8A030;
+      --gold-dim:  rgba(200,133,26,0.18);
+      --gold-line: rgba(200,133,26,0.25);
+      --cream:     #F0E6CC;
+      --cream-dim: rgba(240,230,204,0.55);
+      --cream-off: rgba(240,230,204,0.30);
+      --serif:     'Playfair Display', Georgia, serif;
+      --sans:      'Jost', sans-serif;
+      --ease:      cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--cream);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NOISE TEXTURE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ─── NAVBAR ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 0 48px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s var(--ease), border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(18,14,7,0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-color: var(--gold-line);
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: var(--gold-lt);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--cream-dim);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold-lt); }
+    .lang-toggle {
+      background: none;
+      border: 1px solid var(--gold-line);
+      color: var(--gold);
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .lang-toggle:hover {
+      background: var(--gold-dim);
+      border-color: var(--gold);
+    }
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--cream);
+      transition: all 0.3s;
+    }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 40px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero-orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(200,133,26,0.10) 0%, transparent 70%);
+      top: -100px; left: 50%;
+      transform: translateX(-50%);
+    }
+    .hero-orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(200,133,26,0.06) 0%, transparent 70%);
+      bottom: 0; right: -100px;
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.8s var(--ease) 0.2s forwards;
+    }
+    .hero-logo-img {
+      width: 180px;
+      height: 180px;
+      object-fit: contain;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.9s var(--ease) 0.3s forwards;
+    }
+    .hero-logo-fallback {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, #E8A030, #8B5A0A);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-size: 64px;
+      font-weight: 700;
+      color: var(--bg);
+      margin-bottom: 32px;
+      border: 2px solid rgba(200,133,26,0.3);
+      opacity: 0;
+      animation: fadeUp 0.9s var(--ease) 0.3s forwards;
+    }
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(56px, 10vw, 96px);
+      font-weight: 700;
+      letter-spacing: 10px;
+      color: var(--cream);
+      line-height: 1;
+      margin-bottom: 8px;
+      opacity: 0;
+      animation: fadeUp 0.9s var(--ease) 0.4s forwards;
+    }
+    .hero-subtitle {
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s var(--ease) 0.5s forwards;
+    }
+    .hero-tagline {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--cream-dim);
+      max-width: 440px;
+      line-height: 1.9;
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeUp 0.8s var(--ease) 0.6s forwards;
+    }
+    .hero-cta-group {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeUp 0.8s var(--ease) 0.7s forwards;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--gold);
+      color: var(--bg);
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      padding: 15px 36px;
+      border-radius: 40px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--gold-lt); transform: translateY(-2px); }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      color: var(--cream-dim);
+      font-family: var(--sans);
+      font-size: 13px;
+      letter-spacing: 1px;
+      padding: 15px 36px;
+      border-radius: 40px;
+      border: 1px solid var(--gold-line);
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--gold); color: var(--cream); }
+    .hero-scroll {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeIn 1s var(--ease) 1.2s forwards;
+    }
+    .hero-scroll span {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--cream-off);
+      text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gold-line), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    /* ─── SECTION BASE ─── */
+    section { position: relative; z-index: 1; }
+    .section-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 100px 48px;
+    }
+    .section-eyebrow {
+      font-size: 10px;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+    .gold-rule {
+      width: 48px;
+      height: 1px;
+      background: var(--gold);
+      margin-bottom: 40px;
+    }
+
+    /* ─── ABOUT ─── */
+    #about { background: var(--bg2); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-body {
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.95;
+      color: var(--cream-dim);
+    }
+    .about-body p + p { margin-top: 18px; }
+    .about-pull {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-style: italic;
+      color: var(--cream);
+      border-left: 2px solid var(--gold);
+      padding: 16px 24px;
+      margin-top: 32px;
+      line-height: 1.6;
+      background: var(--gold-dim);
+      border-radius: 0 8px 8px 0;
+    }
+    .about-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .about-photo {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: var(--bg3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--gold-line);
+    }
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .about-photo-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      color: var(--cream-off);
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+    .about-photo-placeholder svg {
+      width: 40px;
+      height: 40px;
+      opacity: 0.3;
+    }
+    .about-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tag {
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-line);
+      color: var(--gold-lt);
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 20px;
+    }
+
+    /* ─── PRODUCTS ─── */
+    #products { background: var(--bg); }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .product-card {
+      background: var(--bg3);
+      border: 1px solid var(--gold-line);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.35s var(--ease), border-color 0.35s;
+    }
+    .product-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(200,133,26,0.5);
+    }
+    .product-photo {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      background: var(--bg2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 52px;
+      border-bottom: 1px solid var(--gold-line);
+    }
+    .product-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .product-photo-ph {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: var(--bg2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--gold-line);
+    }
+    .product-photo-ph span {
+      font-size: 42px;
+    }
+    .product-photo-ph small {
+      font-size: 11px;
+      color: var(--cream-off);
+      letter-spacing: 0.5px;
+    }
+    .product-body { padding: 24px 24px 28px; }
+    .product-name {
+      font-family: var(--serif);
+      font-size: 22px;
+      color: var(--gold-lt);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .product-desc {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--cream-dim);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .product-ingredients {
+      font-size: 11px;
+      color: var(--cream-off);
+      line-height: 1.7;
+      margin-bottom: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--gold-line);
+    }
+    .product-ingredients strong {
+      color: var(--cream-dim);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-size: 10px;
+    }
+    .product-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .product-weight {
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: 0.5px;
+    }
+    .product-badge {
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-line);
+      color: var(--gold-lt);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 12px;
+    }
+
+    /* ─── WHY NAKTA ─── */
+    #why { background: var(--bg2); }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .why-card {
+      background: var(--bg3);
+      border: 1px solid var(--gold-line);
+      border-radius: 14px;
+      padding: 32px 24px;
+      text-align: center;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .why-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-4px);
+    }
+    .why-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px;
+    }
+    .why-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--gold-lt);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .why-title {
+      font-family: var(--serif);
+      font-size: 15px;
+      color: var(--cream);
+      margin-bottom: 8px;
+    }
+    .why-desc {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--cream-off);
+      line-height: 1.7;
+    }
+
+    /* ─── REVIEWS ─── */
+    #reviews { background: var(--bg); }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .review-card {
+      background: var(--bg3);
+      border: 1px solid var(--gold-line);
+      border-radius: 14px;
+      padding: 28px 24px;
+    }
+    .review-mark {
+      font-family: var(--serif);
+      font-size: 48px;
+      color: var(--gold);
+      opacity: 0.3;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .review-text {
+      font-size: 14px;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--cream-dim);
+      line-height: 1.85;
+    }
+    .review-stars {
+      display: flex;
+      gap: 3px;
+      margin-top: 16px;
+    }
+    .star {
+      width: 12px;
+      height: 12px;
+      background: var(--gold);
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    }
+
+    /* ─── WHERE TO BUY ─── */
+    #stores { background: var(--bg2); }
+    .stores-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .stores-list { display: flex; flex-direction: column; gap: 12px; }
+    .store-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--bg3);
+      border: 1px solid var(--gold-line);
+      border-radius: 10px;
+      padding: 16px 20px;
+      transition: border-color 0.2s;
+    }
+    .store-item:hover { border-color: var(--gold); }
+    .store-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+    .store-name {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--cream-dim);
+    }
+    .stores-note {
+      background: var(--bg3);
+      border: 1px solid var(--gold-line);
+      border-radius: 14px;
+      padding: 32px;
+    }
+    .stores-note-title {
+      font-family: var(--serif);
+      font-size: 20px;
+      color: var(--cream);
+      margin-bottom: 12px;
+    }
+    .stores-note-text {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--cream-dim);
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+
+    /* ─── CONTACT ─── */
+    #contact { background: var(--bg); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .contact-card {
+      background: var(--bg3);
+      border: 1px solid var(--gold-line);
+      border-radius: 14px;
+      padding: 32px 24px;
+      text-align: center;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .contact-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-4px);
+    }
+    .contact-icon-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .contact-icon-wrap svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--gold-lt);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .contact-label {
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .contact-value {
+      font-size: 14px;
+      color: var(--cream-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    a.contact-value:hover { color: var(--cream); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--gold-line);
+      padding: 28px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--cream-off);
+      letter-spacing: 0.5px;
+    }
+    footer span a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50%       { opacity: 1;   transform: scaleY(1.1); }
+    }
+
+    /* ─── MOBILE MENU ─── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(18,14,7,0.97);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: var(--serif);
+      font-size: 28px;
+      color: var(--cream);
+      text-decoration: none;
+      letter-spacing: 2px;
+    }
+    .mobile-menu a:hover { color: var(--gold-lt); }
+    .mobile-close {
+      position: absolute;
+      top: 24px; right: 24px;
+      background: none;
+      border: none;
+      color: var(--cream);
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .section-inner { padding: 70px 24px; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .about-visual { display: none; }
+      .products-grid { grid-template-columns: 1fr; gap: 20px; }
+      .why-grid { grid-template-columns: repeat(2, 1fr); }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .stores-layout { grid-template-columns: 1fr; gap: 32px; }
+      .contact-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" onclick="closeMobile()">✕</button>
+    <a href="#about"    onclick="closeMobile()" data-i18n="nav.about">About</a>
+    <a href="#products" onclick="closeMobile()" data-i18n="nav.products">Products</a>
+    <a href="#stores"   onclick="closeMobile()" data-i18n="nav.stores">Where to buy</a>
+    <a href="#contact"  onclick="closeMobile()" data-i18n="nav.contact">Contact</a>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav id="navbar">
+    <a class="nav-logo" href="#">NAKTA</a>
+    <ul class="nav-links">
+      <li><a href="#about"    data-i18n="nav.about">About</a></li>
+      <li><a href="#products" data-i18n="nav.products">Products</a></li>
+      <li><a href="#stores"   data-i18n="nav.stores">Where to buy</a></li>
+      <li><a href="#contact"  data-i18n="nav.contact">Contact</a></li>
+      <li><button class="lang-toggle" onclick="toggleLang()" id="langBtn">RU</button></li>
+    </ul>
+    <button class="nav-hamburger" onclick="openMobile()">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <p class="hero-eyebrow" data-i18n="hero.eyebrow">Homemade · Halal · Handcrafted</p>
+    <img
+      class="hero-logo-img"
+      src="assets/logo.png"
+      alt="NAKTA"
+      onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'"
+    >
+    <div class="hero-logo-fallback" id="logoFallback" style="display:none">N</div>
+    <h1 class="hero-title">NAKTA</h1>
+    <p class="hero-subtitle" data-i18n="hero.subtitle">Mom's Recipes · Seattle, WA</p>
+    <p class="hero-tagline" data-i18n="hero.tagline">Real food made the way it should be — with clean ingredients, honest hands, and a mother's love.</p>
+    <div class="hero-cta-group">
+      <a class="btn-primary" href="https://wa.me/14259055286" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <span data-i18n="hero.cta">Order via WhatsApp</span>
+      </a>
+      <a class="btn-secondary" href="#products" data-i18n="hero.ctaSecondary">See our products</a>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>scroll</span>
+    </div>
+  </section>
+<!-- TRUST BAR -->
+<div style="background:#1c1509;border-top:1px solid rgba(200,133,26,0.2);border-bottom:1px solid rgba(200,133,26,0.2);padding:14px 48px;display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;position:relative;z-index:1;">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C8851A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    <span style="font-family:'Jost',sans-serif;font-size:12px;letter-spacing:1.5px;color:rgba(240,230,204,0.55);">ZABIHA HALAL CERTIFIED MEAT</span>
+  </div>
+  <div style="width:1px;height:16px;background:rgba(200,133,26,0.25);"></div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C8851A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <span style="font-family:'Jost',sans-serif;font-size:12px;letter-spacing:1.5px;color:rgba(240,230,204,0.55);">VALID THROUGH DEC 2026</span>
+  </div>
+  <div style="width:1px;height:16px;background:rgba(200,133,26,0.25);"></div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C8851A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    <span style="font-family:'Jost',sans-serif;font-size:12px;letter-spacing:1.5px;color:rgba(240,230,204,0.55);">SHARI'AH BOARD OF AMERICA</span>
+  </div>
+</div>
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-inner about-grid">
+      <div>
+        <p class="section-eyebrow" data-i18n="about.eyebrow">Our story</p>
+        <h2 class="section-title" data-i18n="about.title">Born from a mother's kitchen</h2>
+        <div class="gold-rule"></div>
+        <div class="about-body">
+          <p data-i18n="about.p1">When I moved to the United States, I missed more than just home. I missed the aroma of freshly made manty, the taste of real homemade meals — the feeling you simply can't find in a store.</p>
+          <p data-i18n="about.p2">That's how NAKTA was born. Every item is carefully made with clean, high-quality ingredients. No artificial colors. No additives. Non-GMO. 100% Halal.</p>
+          <p data-i18n="about.p3">Just real food. Just like home. Just like mom's.</p>
+        </div>
+        <div class="about-pull" data-i18n="about.pull">"NAKTA is more than food — it's a feeling. A connection to home, to childhood, and to real, honest cooking."</div>
+      </div>
+      <div class="about-visual">
+        <div class="about-photo">
+          <img src="assets/products/hero.jpg" alt="NAKTA products"
+            onerror="this.parentElement.innerHTML='<div class=\'about-photo-placeholder\'><svg viewBox=\'0 0 24 24\' stroke=\'currentColor\' fill=\'none\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Add your photo here</span></div>'">
+        </div>
+        <div class="about-tags">
+          <span class="tag">Halal</span>
+          <span class="tag">Handmade</span>
+          <span class="tag">No additives</span>
+          <span class="tag">Non-GMO</span>
+          <span class="tag">Seattle, WA</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section id="products">
+    <div class="section-inner">
+      <p class="section-eyebrow" data-i18n="products.eyebrow">What we make</p>
+      <h2 class="section-title" data-i18n="products.title">Our products</h2>
+      <div class="gold-rule"></div>
+      <div class="products-grid">
+
+        <div class="product-card">
+          <div class="product-photo-ph">
+            <img src="assets/products/manty.jpg" alt="Manty"
+              style="width:100%;height:100%;object-fit:cover;"
+              onerror="this.parentElement.innerHTML='<div class=\'product-photo-ph\'><span>🥟</span><small>Add manty photo</small></div>'">
+          </div>
+          <div class="product-body">
+            <div class="product-name" data-i18n="p1.name">Manty</div>
+            <div class="product-desc" data-i18n="p1.desc">Traditional Central Asian dumplings filled with juicy chopped lamb and onion, wrapped in delicate handmade dough. Steam from frozen for 35–40 min.</div>
+            <div class="product-ingredients">
+              <strong data-i18n="label.ingredients">Ingredients: </strong>
+              <span data-i18n="p1.ingredients">Wheat flour, lamb, onion, egg, salt, black pepper · Contains: WHEAT, EGG</span>
+            </div>
+            <div class="product-footer">
+              <span class="product-weight">22 oz (630g) · 6 pcs</span>
+              <span class="product-badge">Halal</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-photo-ph">
+            <img src="assets/products/dumplings.jpg" alt="Dumplings"
+              style="width:100%;height:100%;object-fit:cover;"
+              onerror="this.parentElement.innerHTML='<div class=\'product-photo-ph\'><span>🫕</span><small>Add dumplings photo</small></div>'">
+          </div>
+          <div class="product-body">
+            <div class="product-name" data-i18n="p2.name">Dumplings</div>
+            <div class="product-desc" data-i18n="p2.desc">Classic pelmeni with tender beef filling. Clean ingredients, rich in flavor — perfect for everyday comfort meals. Cook in boiling water 8–10 min.</div>
+            <div class="product-ingredients">
+              <strong data-i18n="label.ingredients">Ingredients: </strong>
+              <span data-i18n="p2.ingredients">Wheat flour, beef, onion, egg, salt, black pepper · Contains: WHEAT, EGG</span>
+            </div>
+            <div class="product-footer">
+              <span class="product-weight">16 oz (454g) · 12 pcs</span>
+              <span class="product-badge">Halal</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-photo-ph">
+            <img src="assets/products/meatballs.jpg" alt="Meatballs"
+              style="width:100%;height:100%;object-fit:cover;"
+              onerror="this.parentElement.innerHTML='<div class=\'product-photo-ph\'><span>🍖</span><small>Add meatballs photo</small></div>'">
+          </div>
+          <div class="product-body">
+            <div class="product-name" data-i18n="p3.name">Meatballs</div>
+            <div class="product-desc" data-i18n="p3.desc">Juicy, flavorful beef meatballs made from high-quality ingredients — simple, natural, and easy to prepare. Pan-fry or bake from frozen.</div>
+            <div class="product-ingredients">
+              <strong data-i18n="label.ingredients">Ingredients: </strong>
+              <span data-i18n="p3.ingredients">Beef, eggs, salt, black pepper · Non-GMO · No additives</span>
+            </div>
+            <div class="product-footer">
+              <span class="product-weight">16 oz (454g) · 12 pcs</span>
+              <span class="product-badge">Non-GMO</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY NAKTA -->
+  <section id="why">
+    <div class="section-inner">
+      <p class="section-eyebrow" data-i18n="why.eyebrow">Why choose us</p>
+      <h2 class="section-title" data-i18n="why.title">What makes us different</h2>
+      <div class="gold-rule"></div>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="why-title" data-i18n="why.1.title">100% Halal</div>
+          <div class="why-desc" data-i18n="why.1.desc">Prepared and certified according to halal standards</div>
+          <button onclick="openCert()" style="margin-top:14px;background:none;border:1px solid rgba(200,133,26,0.3);color:#C8851A;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:1.5px;padding:7px 16px;border-radius:20px;cursor:pointer;transition:border-color 0.2s;">VIEW CERTIFICATE ↗</button>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">
+            <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          </div>
+          <div class="why-title" data-i18n="why.2.title">Handmade</div>
+          <div class="why-desc" data-i18n="why.2.desc">Crafted by hand every time — never machine-made</div>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22V12"/><path d="M12 12C12 12 7 9 7 4a5 5 0 0110 0c0 5-5 8-5 8z"/></svg>
+          </div>
+          <div class="why-title" data-i18n="why.3.title">No additives</div>
+          <div class="why-desc" data-i18n="why.3.desc">No artificial colors, no preservatives, no shortcuts</div>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="why-title" data-i18n="why.4.title">Non-GMO</div>
+          <div class="why-desc" data-i18n="why.4.desc">Clean, honest ingredients — exactly as nature intended</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section id="reviews">
+    <div class="section-inner">
+      <p class="section-eyebrow" data-i18n="reviews.eyebrow">What people say</p>
+      <h2 class="section-title" data-i18n="reviews.title">Customer reviews</h2>
+      <div class="gold-rule"></div>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-mark">"</div>
+          <div class="review-text" data-i18n="r1">Very tasty — just like homemade. The manty are juicy and full of flavor.</div>
+          <div class="review-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        </div>
+        <div class="review-card">
+          <div class="review-mark">"</div>
+          <div class="review-text" data-i18n="r2">I was looking for clean, natural food without additives — finally found it.</div>
+          <div class="review-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        </div>
+        <div class="review-card">
+          <div class="review-mark">"</div>
+          <div class="review-text" data-i18n="r3">You can really taste the quality. The dough and meat are perfect.</div>
+          <div class="review-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        </div>
+        <div class="review-card">
+          <div class="review-mark">"</div>
+          <div class="review-text" data-i18n="r4">It feels like it's made with care — not like typical store products.</div>
+          <div class="review-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        </div>
+        <div class="review-card">
+          <div class="review-mark">"</div>
+          <div class="review-text" data-i18n="r5">The meatballs are tender, juicy, and very easy to cook.</div>
+          <div class="review-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        </div>
+        <div class="review-card">
+          <div class="review-mark">"</div>
+          <div class="review-text" data-i18n="r6">The dumplings were loved by the whole family. Will definitely buy again.</div>
+          <div class="review-stars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- WHERE TO BUY -->
+  <section id="stores">
+    <div class="section-inner">
+      <p class="section-eyebrow" data-i18n="stores.eyebrow">Retail locations</p>
+      <h2 class="section-title" data-i18n="stores.title">Where to buy</h2>
+      <div class="gold-rule"></div>
+      <div class="stores-layout">
+        <div class="stores-list">
+          <div class="store-item"><div class="store-dot"></div><a class="store-name" href="https://maps.app.goo.gl/PAZEBmUkiZS4yfQt5" target="_blank" style="color:inherit;text-decoration:none;">Oskoo Persian & Mediterranean Market</a></div>
+          <div class="store-item"><div class="store-dot"></div><a class="store-name" href="https://maps.app.goo.gl/oax9GJ1qLuQ2GQdr5" target="_blank" style="color:inherit;text-decoration:none;">IFB Market</a></div>
+          <div class="store-item"><div class="store-dot"></div><a class="store-name" href="https://maps.app.goo.gl/A6feU55r33MgRMYz9" target="_blank" style="color:inherit;text-decoration:none;">European Grocery</a></div>
+          <div class="store-item"><div class="store-dot"></div><a class="store-name" href="https://maps.app.goo.gl/DQNKJRVkcwqeWiLw5" target="_blank" style="color:inherit;text-decoration:none;">Halal Meats</a></div>
+          <div class="store-item"><div class="store-dot"></div><a class="store-name" href="https://maps.app.goo.gl/Eyc53D1P9JvoGZbK7" target="_blank" style="color:inherit;text-decoration:none;"></a>Caravan Halal Central Asian Fusion</div>
+        </div>
+        <div class="stores-note">
+          <div class="stores-note-title" data-i18n="stores.note.title">Can't find us nearby?</div>
+          <div class="stores-note-text" data-i18n="stores.note.text">Write to us on WhatsApp and we'll help you find the nearest location or arrange a pickup in Seattle.</div>
+          <a class="btn-primary" href="https://wa.me/14259055286" target="_blank" style="display:inline-flex">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            <span data-i18n="hero.cta">Order via WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-inner">
+      <p class="section-eyebrow" data-i18n="contact.eyebrow">Get in touch</p>
+      <h2 class="section-title" data-i18n="contact.title">Contact us</h2>
+      <div class="gold-rule"></div>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="contact-icon-wrap">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          </div>
+          <div class="contact-label">WhatsApp</div>
+          <a class="contact-value" href="https://wa.me/14259055286" target="_blank">+1 (425) 905-5286</a>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon-wrap">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.69a16 16 0 006.29 6.29l1.21-1.21a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div class="contact-label" data-i18n="contact.phone">Phone</div>
+          <a class="contact-value" href="tel:+15712413876">+1 (571) 241-3876</a>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon-wrap">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="contact-label">Email</div>
+          <a class="contact-value" href="mailto:naktallc@gmail.com">naktallc@gmail.com</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2025 NAKTA LLC · Seattle, WA</span>
+    <span>Homemade Frozen Products · <a href="mailto:naktallc@gmail.com">naktallc@gmail.com</a></span>
+  </footer>
+
+  <script>
+    // ─── NAVBAR SCROLL ───
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // ─── MOBILE MENU ───
+    function openMobile() { document.getElementById('mobileMenu').classList.add('open'); }
+    function closeMobile() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+    // ─── i18n ───
+    const i18n = {
+      en: {
+        'nav.about': 'About', 'nav.products': 'Products',
+        'nav.stores': 'Where to buy', 'nav.contact': 'Contact',
+        'hero.eyebrow': 'Homemade · Halal · Handcrafted',
+        'hero.subtitle': "Mom's Recipes · Seattle, WA",
+        'hero.tagline': "Real food made the way it should be — with clean ingredients, honest hands, and a mother's love.",
+        'hero.cta': 'Order via WhatsApp', 'hero.ctaSecondary': 'See our products',
+        'about.eyebrow': 'Our story', 'about.title': "Born from a mother's kitchen",
+        'about.p1': "When I moved to the United States, I missed more than just home. I missed the aroma of freshly made manty, the taste of real homemade meals — the feeling you simply can't find in a store.",
+        'about.p2': "That's how NAKTA was born. Every item is carefully made with clean, high-quality ingredients. No artificial colors. No additives. Non-GMO. 100% Halal.",
+        'about.p3': "Just real food. Just like home. Just like mom's.",
+        'about.pull': '"NAKTA is more than food — it\'s a feeling. A connection to home, to childhood, and to real, honest cooking."',
+        'products.eyebrow': 'What we make', 'products.title': 'Our products',
+        'label.ingredients': 'Ingredients: ',
+        'p1.name': 'Manty', 'p1.desc': 'Traditional Central Asian dumplings filled with juicy chopped lamb and onion, wrapped in delicate handmade dough. Steam from frozen for 35–40 min.', 'p1.ingredients': 'Wheat flour, lamb, onion, egg, salt, black pepper · Contains: WHEAT, EGG',
+        'p2.name': 'Dumplings', 'p2.desc': 'Classic pelmeni with tender beef filling. Rich in flavor — perfect for everyday comfort meals. Cook in boiling water 8–10 min.', 'p2.ingredients': 'Wheat flour, beef, onion, egg, salt, black pepper · Contains: WHEAT, EGG',
+        'p3.name': 'Meatballs', 'p3.desc': 'Juicy, flavorful beef meatballs made from high-quality ingredients — simple, natural, and easy to prepare. Pan-fry or bake from frozen.', 'p3.ingredients': 'Beef, eggs, salt, black pepper · Non-GMO · No additives',
+        'why.eyebrow': 'Why choose us', 'why.title': 'What makes us different',
+        'why.1.title': '100% Halal', 'why.1.desc': 'Prepared and certified according to halal standards',
+        'why.2.title': 'Handmade', 'why.2.desc': 'Crafted by hand every time — never machine-made',
+        'why.3.title': 'No additives', 'why.3.desc': 'No artificial colors, no preservatives, no shortcuts',
+        'why.4.title': 'Non-GMO', 'why.4.desc': 'Clean, honest ingredients — exactly as nature intended',
+        'reviews.eyebrow': 'What people say', 'reviews.title': 'Customer reviews',
+        'r1': 'Very tasty — just like homemade. The manty are juicy and full of flavor.',
+        'r2': 'I was looking for clean, natural food without additives — finally found it.',
+        'r3': 'You can really taste the quality. The dough and meat are perfect.',
+        'r4': 'It feels like it\'s made with care — not like typical store products.',
+        'r5': 'The meatballs are tender, juicy, and very easy to cook.',
+        'r6': 'The dumplings were loved by the whole family. Will definitely buy again.',
+        'stores.eyebrow': 'Retail locations', 'stores.title': 'Where to buy',
+        'stores.note.title': "Can't find us nearby?",
+        'stores.note.text': "Write to us on WhatsApp and we'll help you find the nearest location or arrange a pickup in Seattle.",
+        'contact.eyebrow': 'Get in touch', 'contact.title': 'Contact us', 'contact.phone': 'Phone'
+      },
+      ru: {
+        'nav.about': 'О нас', 'nav.products': 'Продукты',
+        'nav.stores': 'Где купить', 'nav.contact': 'Контакты',
+        'hero.eyebrow': 'Домашнее · Халяль · Ручная работа',
+        'hero.subtitle': 'Мамины рецепты · Сиэтл, США',
+        'hero.tagline': 'Настоящая еда, приготовленная как надо — чистые ингредиенты, честные руки и материнская любовь.',
+        'hero.cta': 'Написать в WhatsApp', 'hero.ctaSecondary': 'Смотреть продукты',
+        'about.eyebrow': 'Наша история', 'about.title': 'Из маминой кухни',
+        'about.p1': 'Когда я переехала в Америку, я скучала не просто по дому. Я скучала по запаху свежих мантов, по вкусу настоящей домашней еды — по тому ощущению, которое просто невозможно найти в магазине.',
+        'about.p2': 'Так появилась NAKTA. Каждое изделие делается вручную из чистых, высококачественных продуктов. Никаких искусственных красителей. Никаких добавок. Без ГМО. 100% Халяль.',
+        'about.p3': 'Просто настоящая еда. Как дома. Как у мамы.',
+        'about.pull': '"NAKTA — это больше чем еда. Это чувство дома, связь с детством и с настоящей, честной кухней."',
+        'products.eyebrow': 'Что мы готовим', 'products.title': 'Наши продукты',
+        'label.ingredients': 'Состав: ',
+        'p1.name': 'Манты', 'p1.desc': 'Традиционные центральноазиатские манты с сочной рубленой бараниной и луком в нежном тесте ручной работы. Готовить на пару 35–40 мин из заморозки.', 'p1.ingredients': 'Пшеничная мука, баранина, лук, яйцо, соль, чёрный перец · Содержит: ПШЕНИЦУ, ЯЙЦО',
+        'p2.name': 'Пельмени', 'p2.desc': 'Классические пельмени с нежной говяжьей начинкой. Чистый состав, насыщенный вкус — идеальный обед каждый день. Варить 8–10 мин.', 'p2.ingredients': 'Пшеничная мука, говядина, лук, яйцо, соль, чёрный перец · Содержит: ПШЕНИЦУ, ЯЙЦО',
+        'p3.name': 'Фрикадельки', 'p3.desc': 'Сочные говяжьи фрикадельки из качественных натуральных ингредиентов — просто, вкусно и очень легко готовить. Жарить или запекать из заморозки.', 'p3.ingredients': 'Говядина, яйца, соль, чёрный перец · Без ГМО · Без добавок',
+        'why.eyebrow': 'Почему NAKTA', 'why.title': 'Что нас отличает',
+        'why.1.title': '100% Халяль', 'why.1.desc': 'Приготовлено в соответствии со стандартами халяль',
+        'why.2.title': 'Ручная работа', 'why.2.desc': 'Лепится вручную каждый раз — никаких машин',
+        'why.3.title': 'Без добавок', 'why.3.desc': 'Без красителей, без консервантов, без компромиссов',
+        'why.4.title': 'Без ГМО', 'why.4.desc': 'Чистые, честные ингредиенты — как задумано природой',
+        'reviews.eyebrow': 'Отзывы', 'reviews.title': 'Что говорят покупатели',
+        'r1': 'Очень вкусно — прямо как домашнее. Манты сочные и насыщенные.',
+        'r2': 'Искала чистую еду без добавок — наконец нашла.',
+        'r3': 'Сразу чувствуется качество. Тесто и мясо — идеальны.',
+        'r4': 'Ощущение, что сделано с душой — не как обычные магазинные продукты.',
+        'r5': 'Фрикадельки нежные, сочные, очень легко готовить.',
+        'r6': 'Пельмени понравились всей семье. Обязательно куплю ещё.',
+        'stores.eyebrow': 'Розничные точки', 'stores.title': 'Где купить',
+        'stores.note.title': 'Не нашли рядом?',
+        'stores.note.text': 'Напишите нам в WhatsApp, и мы поможем найти ближайшую точку или договоримся о самовывозе в Сиэтле.',
+        'contact.eyebrow': 'Связаться с нами', 'contact.title': 'Контакты', 'contact.phone': 'Телефон'
+      }
+    };
+
+    let currentLang = 'en';
+    function toggleLang() {
+      currentLang = currentLang === 'en' ? 'ru' : 'en';
+      document.getElementById('langBtn').textContent = currentLang === 'en' ? 'RU' : 'EN';
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (i18n[currentLang][key]) el.textContent = i18n[currentLang][key];
+      });
+      document.documentElement.lang = currentLang;
+    }
+    function openCert() {
+      const m = document.getElementById('certModal');
+      m.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeCert() {
+      document.getElementById('certModal').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  </script>
+  <!-- HALAL CERTIFICATE MODAL -->
+<div id="certModal" onclick="closeCert()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;align-items:center;justify-content:center;padding:24px;">
+  <div onclick="event.stopPropagation()" style="position:relative;max-width:520px;width:100%;border-radius:16px;overflow:hidden;border:1px solid rgba(200,133,26,0.3);">
+    <button onclick="closeCert()" style="position:absolute;top:12px;right:12px;background:rgba(18,14,7,0.8);border:1px solid rgba(200,133,26,0.3);color:#F0E6CC;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;z-index:10;">✕</button>
+    <img src="assets/halal-certificate.jpg" alt="Zabiha Halal Certificate" style="width:100%;display:block;">
+  </div>
+</div>
+</body>
+</html>
